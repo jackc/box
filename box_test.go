@@ -18,6 +18,14 @@ func (s *MySuite) TestZeroValueTimeIsUndefined(c *C) {
 	c.Check(b.Status(), Equals, box.Undefined)
 }
 
+func (s *MySuite) TestNewTime(c *C) {
+	val := time.Now()
+	b := box.NewTime(val)
+
+	c.Assert(b.IsFull(), Equals, true)
+	c.Check(b.Get(), Equals, val)
+}
+
 func (s *MySuite) TestSetAndGet(c *C) {
 	var b box.Time
 	val := time.Now()

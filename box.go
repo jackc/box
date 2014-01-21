@@ -16,6 +16,11 @@ type Time struct {
 	status int
 }
 
+func NewTime(v time.Time) (box Time) {
+	box.Set(v)
+	return box
+}
+
 func (box *Time) Set(v time.Time) {
 	box.value = v
 	box.status = Full
