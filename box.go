@@ -27,7 +27,7 @@ func (box *Time) Set(v time.Time) {
 }
 
 func (box *Time) SetUndefined() {
-	box.status = Unknown
+	box.status = Undefined
 }
 
 func (box *Time) SetUnknown() {
@@ -35,7 +35,7 @@ func (box *Time) SetUnknown() {
 }
 
 func (box *Time) SetEmpty() {
-	box.status = Unknown
+	box.status = Empty
 }
 
 // Panics unless box is Full
