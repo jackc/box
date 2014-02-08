@@ -15,7 +15,7 @@ var _ = Suite(&MySuite{})
 
 func (s *MySuite) TestZeroValueTimeIsUndefined(c *C) {
 	var b box.Time
-	c.Check(b.Status(), Equals, box.Undefined)
+	c.Check(b.Status(), Equals, byte(box.Undefined))
 }
 
 func (s *MySuite) TestNewTime(c *C) {

@@ -1,0 +1,75 @@
+package box
+
+import (
+	"time"
+)
+
+const (
+	Undefined = iota
+	Unknown   = iota
+	Empty     = iota
+	Full      = iota
+)
+
+<%
+[
+	['Bool', 'bool'],
+	['Float32', 'float32'],
+	['Float64', 'float64'],
+	['Int8', 'int8'],
+	['Int16', 'int16'],
+	['Int32', 'int32'],
+	['Int64', 'int64'],
+	['String', 'string'],
+	['Time', 'time.Time'],
+	['UInt8', 'uint8'],
+	['UInt16', 'uint16'],
+	['UInt32', 'uint32'],
+	['UInt64', 'uint64']
+].each do |box_type, value_type|
+%>
+type <%= box_type %> struct {
+	value  <%= value_type %>
+	status byte
+}
+
+func New<%= box_type %>(v <%= value_type %>) (box <%= box_type %>) {
+	box.Set(v)
+	return box
+}
+
+func (box *<%= box_type %>) Set(v <%= value_type %>) {
+	box.value = v
+	box.status = Full
+}
+
+func (box *<%= box_type %>) SetUndefined() {
+	box.status = Undefined
+}
+
+func (box *<%= box_type %>) SetUnknown() {
+	box.status = Unknown
+}
+
+func (box *<%= box_type %>) SetEmpty() {
+	box.status = Empty
+}
+
+// Panics unless box is Full
+func (box *<%= box_type %>) Get() <%= value_type %> {
+	if box.status != Full {
+		panic("Tried to get from box that was not full")
+	}
+
+	return box.value
+}
+
+func (box *<%= box_type %>) Status() byte {
+	return box.status
+}
+
+func (box *<%= box_type %>) IsFull() bool {
+	return box.status == Full
+}
+
+<% end %>
