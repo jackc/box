@@ -26,6 +26,14 @@ func (box *Bool) Set(v bool) {
 	box.status = Full
 }
 
+func (box *Bool) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(bool))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *Bool) SetUndefined() {
 	box.status = Undefined
 }
@@ -68,6 +76,14 @@ func NewFloat32(v float32) (box Float32) {
 func (box *Float32) Set(v float32) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *Float32) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(float32))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *Float32) SetUndefined() {
@@ -114,6 +130,14 @@ func (box *Float64) Set(v float64) {
 	box.status = Full
 }
 
+func (box *Float64) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(float64))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *Float64) SetUndefined() {
 	box.status = Undefined
 }
@@ -156,6 +180,14 @@ func NewInt8(v int8) (box Int8) {
 func (box *Int8) Set(v int8) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *Int8) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(int8))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *Int8) SetUndefined() {
@@ -202,6 +234,14 @@ func (box *Int16) Set(v int16) {
 	box.status = Full
 }
 
+func (box *Int16) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(int16))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *Int16) SetUndefined() {
 	box.status = Undefined
 }
@@ -244,6 +284,14 @@ func NewInt32(v int32) (box Int32) {
 func (box *Int32) Set(v int32) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *Int32) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(int32))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *Int32) SetUndefined() {
@@ -290,6 +338,14 @@ func (box *Int64) Set(v int64) {
 	box.status = Full
 }
 
+func (box *Int64) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(int64))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *Int64) SetUndefined() {
 	box.status = Undefined
 }
@@ -332,6 +388,14 @@ func NewString(v string) (box String) {
 func (box *String) Set(v string) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *String) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(string))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *String) SetUndefined() {
@@ -378,6 +442,14 @@ func (box *Time) Set(v time.Time) {
 	box.status = Full
 }
 
+func (box *Time) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(time.Time))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *Time) SetUndefined() {
 	box.status = Undefined
 }
@@ -420,6 +492,14 @@ func NewUInt8(v uint8) (box UInt8) {
 func (box *UInt8) Set(v uint8) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *UInt8) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(uint8))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *UInt8) SetUndefined() {
@@ -466,6 +546,14 @@ func (box *UInt16) Set(v uint16) {
 	box.status = Full
 }
 
+func (box *UInt16) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(uint16))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *UInt16) SetUndefined() {
 	box.status = Undefined
 }
@@ -510,6 +598,14 @@ func (box *UInt32) Set(v uint32) {
 	box.status = Full
 }
 
+func (box *UInt32) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(uint32))
+	} else {
+		box.status = nilStatus
+	}
+}
+
 func (box *UInt32) SetUndefined() {
 	box.status = Undefined
 }
@@ -552,6 +648,14 @@ func NewUInt64(v uint64) (box UInt64) {
 func (box *UInt64) Set(v uint64) {
 	box.value = v
 	box.status = Full
+}
+
+func (box *UInt64) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(uint64))
+	} else {
+		box.status = nilStatus
+	}
 }
 
 func (box *UInt64) SetUndefined() {

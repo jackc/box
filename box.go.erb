@@ -43,6 +43,14 @@ func (box *<%= box_type %>) Set(v <%= value_type %>) {
 	box.status = Full
 }
 
+func (box *<%= box_type %>) SetAllowNil(v interface{}, nilStatus byte) {
+	if v != nil {
+		box.Set(v.(<%= value_type %>))
+	} else {
+	  box.status = nilStatus
+	}
+}
+
 func (box *<%= box_type %>) SetUndefined() {
 	box.status = Undefined
 }

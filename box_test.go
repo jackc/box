@@ -36,6 +36,15 @@ func (s *MySuite) TestSetAndGet(c *C) {
 	c.Check(b.Get(), Equals, val)
 }
 
+func (s *MySuite) TestSetAllowNil(c *C) {
+	var b box.Time
+
+	b.SetAllowNil(nil, box.Empty)
+
+	c.Assert(b.IsFull(), Equals, false)
+	c.Check(b.Status(), Equals, byte(box.Empty))
+}
+
 func (s *MySuite) TestGetPanicsWhenNotFull(c *C) {
 	var b box.Time
 
