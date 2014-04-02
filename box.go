@@ -1,3 +1,4 @@
+// Package box stores values that may be undefined, unknown, or empty.
 package box
 
 import (
