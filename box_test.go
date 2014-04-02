@@ -22,8 +22,9 @@ func (s *MySuite) TestNewTime(c *C) {
 	val := time.Now()
 	b := box.NewTime(val)
 
-	c.Assert(b.IsFull(), Equals, true)
-	c.Check(b.Get(), Equals, val)
+	val2, present := b.Get()
+	c.Check(val2, Equals, val)
+	c.Check(present, Equals, true)
 }
 
 func (s *MySuite) TestSetAndGet(c *C) {
@@ -32,28 +33,85 @@ func (s *MySuite) TestSetAndGet(c *C) {
 
 	b.Set(val)
 
-	c.Assert(b.IsFull(), Equals, true)
-	c.Check(b.Get(), Equals, val)
+	val2, present := b.Get()
+	c.Check(val2, Equals, val)
+	c.Check(present, Equals, true)
+
+	c.Check(b.MustGet(), Equals, val)
+
+	b.SetUndefined()
+	_, present = b.Get()
+	c.Check(present, Equals, false)
+
+	b.SetUnknown()
+	_, present = b.Get()
+	c.Check(present, Equals, false)
+
+	b.SetEmpty()
+	_, present = b.Get()
+	c.Check(present, Equals, false)
 }
 
-func (s *MySuite) TestSetAllowNil(c *C) {
-	var b box.Time
-
-	b.SetAllowNil(nil, box.Empty)
-
-	c.Assert(b.IsFull(), Equals, false)
-	c.Check(b.Status(), Equals, byte(box.Empty))
-}
-
-func (s *MySuite) TestGetPanicsWhenNotFull(c *C) {
+func (s *MySuite) TestGetCoerceNil(c *C) {
 	var b box.Time
 
 	b.SetUndefined()
-	c.Check(b.Get, Panics, "Tried to get from box that was not full")
+	c.Check(b.GetCoerceNil(), Equals, nil)
 
 	b.SetUnknown()
-	c.Check(b.Get, Panics, "Tried to get from box that was not full")
+	c.Check(b.GetCoerceNil(), Equals, nil)
 
 	b.SetEmpty()
-	c.Check(b.Get, Panics, "Tried to get from box that was not full")
+	c.Check(b.GetCoerceNil(), Equals, nil)
+
+	val := time.Now()
+	b.Set(val)
+	c.Check(b.GetCoerceNil(), Equals, val)
+}
+
+func (s *MySuite) TestSetCoerceNil(c *C) {
+	var b box.Time
+
+	b.SetCoerceNil(nil, box.Empty)
+
+	c.Check(b.Status(), Equals, byte(box.Empty))
+}
+
+func (s *MySuite) TestGetCoerceZero(c *C) {
+	var b box.Time
+	var zero time.Time
+
+	b.SetUndefined()
+	c.Check(b.GetCoerceZero(), Equals, zero)
+
+	b.SetUnknown()
+	c.Check(b.GetCoerceZero(), Equals, zero)
+
+	b.SetEmpty()
+	c.Check(b.GetCoerceZero(), Equals, zero)
+
+	val := time.Now()
+	b.Set(val)
+	c.Check(b.GetCoerceNil(), Equals, val)
+}
+
+func (s *MySuite) TestSetCoerceZero(c *C) {
+	var b box.Time
+	var zero time.Time
+
+	b.SetCoerceZero(zero, box.Empty)
+	c.Check(b.Status(), Equals, byte(box.Empty))
+}
+
+func (s *MySuite) TestMustGetPanicsWhenNotFull(c *C) {
+	var b box.Time
+
+	b.SetUndefined()
+	c.Check(b.MustGet, Panics, "called MustGet on a box that was not full")
+
+	b.SetUnknown()
+	c.Check(b.MustGet, Panics, "called MustGet on a box that was not full")
+
+	b.SetEmpty()
+	c.Check(b.MustGet, Panics, "called MustGet on a box that was not full")
 }

@@ -43,9 +43,36 @@ func (box *<%= box_type %>) Set(v <%= value_type %>) {
 	box.status = Full
 }
 
-func (box *<%= box_type %>) SetAllowNil(v interface{}, nilStatus byte) {
+func (box *<%= box_type %>) GetCoerceNil() interface{} {
+	if box.status == Full {
+		return box.value
+	} else {
+		return nil
+	}
+}
+
+func (box *<%= box_type %>) SetCoerceNil(v interface{}, nilStatus byte) {
 	if v != nil {
 		box.Set(v.(<%= value_type %>))
+	} else {
+	  box.status = nilStatus
+	}
+}
+
+func (box *<%= box_type %>) GetCoerceZero() <%= value_type %> {
+	if box.status == Full {
+		return box.value
+	} else {
+		var zero <%= value_type %>
+		return zero
+	}
+}
+
+func (box *<%= box_type %>) SetCoerceZero(v <%= value_type %>, nilStatus byte) {
+	var zero <%= value_type %>
+
+	if v != zero {
+		box.Set(v)
 	} else {
 	  box.status = nilStatus
 	}
@@ -63,21 +90,25 @@ func (box *<%= box_type %>) SetEmpty() {
 	box.status = Empty
 }
 
-// Panics unless box is Full
-func (box *<%= box_type %>) Get() <%= value_type %> {
+func (box *<%= box_type %>) MustGet() <%= value_type %> {
 	if box.status != Full {
-		panic("Tried to get from box that was not full")
+		panic("called MustGet on a box that was not full")
 	}
 
 	return box.value
 }
 
-func (box *<%= box_type %>) Status() byte {
-	return box.status
+func (box *<%= box_type %>) Get() (<%= value_type %>, bool) {
+	if box.status != Full {
+		var zeroVal <%= value_type %>
+		return zeroVal, false
+	}
+
+	return box.value, true
 }
 
-func (box *<%= box_type %>) IsFull() bool {
-	return box.status == Full
+func (box *<%= box_type %>) Status() byte {
+	return box.status
 }
 
 <% end %>
