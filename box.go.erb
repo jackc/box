@@ -2,6 +2,7 @@
 package box
 
 import (
+	"strconv"
 	"time"
 )
 
@@ -122,6 +123,76 @@ func (box *<%= box_type %>) Get() (<%= value_type %>, bool) {
 // Status returns the box's status
 func (box *<%= box_type %>) Status() byte {
 	return box.status
+}
+
+<% end %>
+
+
+func (box Bool) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	if box.value {
+		return []byte("true"), nil
+	}
+	return []byte("false"), nil
+}
+
+<%
+# MarshalJSON for floats
+[
+	["Float32", 32],
+	["Float64", 64]
+].each do |box_type, bitSize|
+%>
+func (box <%= box_type%>) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatFloat(float64(box.value), 'f', -1, <%= bitSize %>)), nil
+}
+
+<% end %>
+
+<%
+# MarshalJSON for integers
+%w[
+	Int8
+	Int16
+	Int32
+	Int64
+].each do |box_type|
+%>
+func (box <%= box_type%>) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatInt(int64(box.value), 10)), nil
+}
+
+<% end %>
+
+func (box String) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(`"` + box.value + `"`), nil
+}
+
+<%
+# MarshalJSON for unsigned integers
+%w[
+	UInt8
+	UInt16
+	UInt32
+	UInt64
+].each do |box_type|
+%>
+func (box <%= box_type%>) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatUint(uint64(box.value), 10)), nil
 }
 
 <% end %>

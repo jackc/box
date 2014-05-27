@@ -2,6 +2,7 @@
 package box
 
 import (
+	"strconv"
 	"time"
 )
 
@@ -1245,4 +1246,91 @@ func (box *UInt64) Get() (uint64, bool) {
 // Status returns the box's status
 func (box *UInt64) Status() byte {
 	return box.status
+}
+
+func (box Bool) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	if box.value {
+		return []byte("true"), nil
+	}
+	return []byte("false"), nil
+}
+
+func (box Float32) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatFloat(float64(box.value), 'f', -1, 32)), nil
+}
+
+func (box Float64) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatFloat(float64(box.value), 'f', -1, 64)), nil
+}
+
+func (box Int8) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatInt(int64(box.value), 10)), nil
+}
+
+func (box Int16) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatInt(int64(box.value), 10)), nil
+}
+
+func (box Int32) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatInt(int64(box.value), 10)), nil
+}
+
+func (box Int64) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatInt(int64(box.value), 10)), nil
+}
+
+func (box String) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(`"` + box.value + `"`), nil
+}
+
+func (box UInt8) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatUint(uint64(box.value), 10)), nil
+}
+
+func (box UInt16) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatUint(uint64(box.value), 10)), nil
+}
+
+func (box UInt32) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatUint(uint64(box.value), 10)), nil
+}
+
+func (box UInt64) MarshalJSON() ([]byte, error) {
+	if box.status != Full {
+		return []byte("null"), nil
+	}
+	return []byte(strconv.FormatUint(uint64(box.value), 10)), nil
 }
